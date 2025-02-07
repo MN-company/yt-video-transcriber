@@ -1,4 +1,4 @@
-# yt-video-transcriber
+![title](https://github.com/MN-company/yt-video-transcriber/blob/main/title.jpeg)
 ## Objective
 The objective is to transcribe a video independently in as little time and steps as possible. With this tool, simply by starting from the link you can obtain a .TXT file containing the entire transcription even if the video does not natively allow it.
 
