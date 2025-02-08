@@ -1,26 +1,33 @@
 ![title](https://github.com/MN-company/yt-video-transcriber/blob/main/title.jpeg)
-## Objective
-The objective is to transcribe a video independently in as little time and steps as possible. With this tool, simply by starting from the link you can obtain a .TXT file containing the entire transcription even if the video does not natively allow it.
+# Objective
+This project was born out of a need I had to make Ai understand video. Since they could not take the video as input, I thought of this code to transcribe it. The goal then is to download a video from YouTube and transcribe it in as little time as possible (with a good amount of accuracy). The use cases are many, which is why I wanted to expand this code and make it public.
+
+## Colab execution
+For those who do not have a powerful machine, my advice is to run the code through Google Colab.
+- You can download the Colab code from the repo or go to this [link](https://colab.research.google.com/drive/1HnjENO6ZjD2l5M782YvucylIdYT8UV2i?usp=sharing) and create a copy (or use the proposed code directly)
 
 ### Local execution (We will release the local version when we have a completed Colab version)
-If you have a powerful enough machine, you can run the Whisper template locally to transcribe the downloaded video. However, this method requires disk space and power that not everyone has.
+Many people do not like having to rely on Google for their needs, and I understand that. However, I prefer to work on the cloud version with Colab because it is much more convenient for me and it is executable on all machines being a cloud solution. As the versions of Colab are released, I will update the repo code to run it locally.
 - Download the repo locally and simply run the requirments.txt
-- And then run the "main.py"
-- Paste the Youtube link and you will find the transcript in the download folder
-
-# Cloud execution
-For those who do not have a powerful machine, my advice is to run the code through Google Colab.
-- Open the Colab file and follow the instructions inside
-
-- Simply go to this [link](https://colab.research.google.com/drive/1HnjENO6ZjD2l5M782YvucylIdYT8UV2i?usp=sharing) and create a copy (or use the proposed code directly)
-
+- And then run the ‘main.py’
 # New future features
 | Feature    | Will be implemented? | Working on it? |
 | -------- | ------- | -------- |
 | GUI  | ⚠️ (We are deciding on it)   | ❌ |
 | Other websites | ❌ | ❌ |
-| Only Whisper mode    | ✅    | ✅ |
-| Faster Whisper    | ✅    | ✅ |
-| Video list as input    | ✅    | ❌ |
+| Video list as input    | ✅    | ✅ |
 | Open source AI that summarizes videos    | ✅    | ❌ |
-| Full CLI mode    | ✅    | ❌ |
+| Full CLI mode    | ✅    | ✅ |
+| Diarization    | ✅    | ❌ |
+
+# Implemented features
+| Feature    | Release |
+| -------- | ------- |
+| Universal transcription | 1.0 |
+| Faster Whisper | 2.0 |
+| Video list as input | 3.0 |
+| CLI Mode | 3.0 |
+| AI that summarizes videos | 4.0 |
+| Diarization | 4.0 |
+| GUI | 5.0 |
+
