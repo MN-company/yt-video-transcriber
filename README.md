@@ -8,8 +8,31 @@ For those who do not have a powerful machine, my advice is to run the code throu
 
 ### Local execution (We will release the local version when we have a completed Colab version)
 Many people do not like having to rely on Google for their needs, and I understand that. However, I prefer to work on the cloud version with Colab because it is much more convenient for me and it is executable on all machines being a cloud solution. As the versions of Colab are released, I will update the repo code to run it locally.
-- Download the repo locally and simply run the requirments.txt
-- And then run the ‘main.py’
+- Download the repo locally 
+```
+git clone https://github.com/MN-company/yt-video-transcriber.git
+```
+- Run the requirments.txt
+```
+pip install -r /path/to/requirements.txt
+```
+- Run the file "main.py"
+```
+python3 /path/to/main.py
+```
+## If you have not already done so, install FFMPEG
+### For Linux
+```
+sudo apt install ffmpeg
+```
+### For MacOS
+```
+brew install ffmpeg
+```
+### For Windows
+Use the official guide on their [website](https://www.ffmpeg.org)
+
+---
 # New future features
 | Feature    | Will be implemented? | Working on it? |
 | -------- | ------- | -------- |
