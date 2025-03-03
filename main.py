@@ -1,77 +1,84 @@
 import os
+import subprocess
 import yt_dlp
-import torch
+from dotenv import load_dotenv
+import argparse
+import logging
 
-from transformers import pipeline
-from transformers.utils import is_flash_attn_2_available
+load_dotenv(".env")
 
-def download_youtube_audio(url, output_path="audio.mp3"):
+HF_TOKEN      = os.environ.get("HF_TOKEN")
+WHISPER_MODEL = os.environ.get("WHISPER_MODEL")
+DIAR_MODEL    = os.environ.get("DIAR_MODEL")
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger(__name__)
+
+def download_audio(url, output_path="audio.mp3"):
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        'outtmpl': output_path.replace('.mp3', '')
+    }
     try:
-        ydl_opts = {
-            'format': 'bestaudio/best',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-            # Nel nome di output, togli .mp3 così `yt-dlp` non aggiunge doppio suffisso
-            'outtmpl': output_path.replace('.mp3', '')
-        }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-        print(f"Download completato! Salvato come {output_path}")
-
-        # Trascrizione dell'audio scaricato
-        transcribe_audio(output_path)
-
+        logger.info(f"Download completato! Salvato come {output_path}")
     except Exception as e:
-        print(f"Errore durante il download: {e}")
+        logger.error(f"Errore durante il download: {e}")
+        raise
 
-def transcribe_audio(audio_path):
+def build_command(output_path, do_diarization):
+    command_parts = [f"insanely-fast-whisper", f"--file-name '{output_path}'"]
+
+    if do_diarization and HF_TOKEN:
+        command_parts.append(f"--hf-token {HF_TOKEN}")
+
+    if WHISPER_MODEL:
+        command_parts.append(f"--model {WHISPER_MODEL}")
+
+    if do_diarization and DIAR_MODEL:
+        command_parts.append(f"--diarization_model {DIAR_MODEL}")
+
+    return " ".join(command_parts)
+
+def transcribe_audio(output_path, do_diarization):
+    command = build_command(output_path, do_diarization)
+    logger.info("Eseguo il comando:")
+    logger.info(command)
     try:
-        # Scegli l'implementazione dell'attenzione (Flash o SDPA)
-        attn_impl = (
-            "flash_attention_2" if is_flash_attn_2_available()
-            else "sdpa"
-        )
+        result = subprocess.run(command, shell=True, check=True, capture_output=True, text=True)
+        logger.info("Trascrizione completata con successo!")
+        logger.info("Output:\n" + result.stdout)
+    except subprocess.CalledProcessError as e:
+        logger.error("Errore durante l'esecuzione di insanely-fast-whisper:")
+        logger.error(e.stderr)
+        raise
 
-        # Inizializza la pipeline con il modello desiderato
-        pipe = pipeline(
-            "automatic-speech-recognition",
-            model="openai/whisper-large-v3",  # o "openai/whisper-large-v2", ecc.
-            torch_dtype=torch.float16,
-            model_kwargs={"attn_implementation": attn_impl},
-        )
+def main():
+    parser = argparse.ArgumentParser(description="Scarica e trascrivi.")
+    parser.add_argument("url", nargs="?", default=None, help="URL del video YouTube")
+    parser.add_argument("-d", "--diarization", action="store_true", help="Abilita la diarizzazione")
+    parser.add_argument("-o", "--output", default="audio.mp3", help="Nome del file audio in output (default: audio.mp3)")
 
-        print("Trascrizione in corso...")
-        outputs = pipe(
-            audio_path,
-            chunk_length_s=30,
-            batch_size=24,
-            return_timestamps=True,
-        )
+    args, unknown = parser.parse_known_args()
 
-        # 'outputs' in genere è un dict o una list di segmenti (dipende dalla versione di Transformers).
-        # Se vuoi il testo unito:
-        # (in Transformers >=4.27 di solito outputs contiene "text" a top-level
-        #  o una lista di "chunks" con testo e timestamps)
-        if isinstance(outputs, dict) and "text" in outputs:
-            text = outputs["text"]
-        else:
-            # Se outputs è una lista di segmenti con "text", uniscili
-            text_segments = [seg["text"] for seg in outputs["chunks"]]
-            text = " ".join(text_segments)
+    invalid_kernel_prefix = "/root/.local/share/jupyter/runtime/"
 
-        # Salviamo il testo in un file
-        transcript_path = audio_path.replace(".mp3", ".txt")
-        with open(transcript_path, "w", encoding="utf-8") as f:
-            f.write(text)
+    if not args.url or args.url.startswith(invalid_kernel_prefix):
+        args.url = input("Inserisci l'URL del video YouTube: ").strip()
 
-        print(f"Trascrizione completata! Salvata in {transcript_path}")
-
+    try:
+        download_audio(args.url, args.output)
+        transcribe_audio(args.output, args.diarization)
     except Exception as e:
-        print(f"Errore nella trascrizione: {e}")
+        logger.error("Processo interrotto a causa di un errore.")
+        exit(1)
 
 if __name__ == "__main__":
-    video_url = input("Inserisci il link del video di YouTube: ")
-    download_youtube_audio(video_url)
+    main()
+
