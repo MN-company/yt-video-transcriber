@@ -1,47 +1,70 @@
-![title](https://github.com/MN-company/yt-video-transcriber/blob/main/title.jpeg)
-# Objective
-This project was born out of a need I had to make Ai understand video. Since they could not take the video as input, I thought of this code to transcribe it. The goal then is to download a video from YouTube and transcribe it in as little time as possible (with a good amount of accuracy). The use cases are many, which is why I wanted to expand this code and make it public.
+r![title](https://github.com/MN-company/yt-video-transcriber/blob/main/title.jpeg)  
 
-## Colab execution
-For those who do not have a powerful machine, my advice is to run the code through Google Colab.
-- You can download the Colab code from the repo or go to this [link](https://colab.research.google.com/drive/1HnjENO6ZjD2l5M782YvucylIdYT8UV2i?usp=sharing) and create a copy (or use the proposed code directly)
+# 🎯 Objective  
+This project was born from a **personal need**: enabling AI to process videos seamlessly. Inspired by **Gemini’s** ability to analyze YouTube videos, I created this tool to make the process **universal**.  
 
-# Local Setup
-Many people do not like having to rely on Google for their needs, and I understand that. However, I prefer to work on the cloud version with Colab because it is much more convenient for me and it is executable on all machines being a cloud solution. As the versions of Colab are released, I will update the repo code to run it locally.
-- Download the repo locally 
-```
-git clone https://github.com/MN-company/yt-video-transcriber.git
-```
-- Run the requirments.txt
-```
-pip install -r /path/to/requirements.txt
-```
-- Run the file "main.py"
-```
-python3 /path/to/main.py
-```
-## If you have not already done so, install FFMPEG
-### For Linux
-```
-sudo apt install ffmpeg
-```
-### For MacOS
-```
-brew install ffmpeg
-```
-### For Windows
-Use the official guide on their [website](https://www.ffmpeg.org)
+The **key principle**? **Automation**. I wanted to make it as **simple and efficient** as possible. 🚀  
 
 ---
-# List of the features
-| Feature    | Will be implemented? | Working on it? | Release |
-| -------- | ------- | -------- | -------- |
-| GUI  | ⚠️ | ❌ | 5.0 |
-| Other websites | ❌ | ❌ | ❌ |
-| Video list as input    | ✅    | ✅ | 3.0 |
-| Open source AI that summarizes videos    | ✅    | ❌ | 4.0 |
-| Full CLI mode    | ✅    | ✅ | 3.0 |
-| Diarization    | ✅    | ❌ | 4.0 |
-| Universal transcription | ✅ | Done | 1.0 |
-| Faster Whisper | ✅ | Done | 2.0 |
-| Diarization | ✅ | ❌ | 4.0 |
+
+# 🎬 Requirements  
+- **FFMPEG**: Download and install it from the official [FFMPEG website](https://www.ffmpeg.org).  
+- **Diarization Model Access**: Unlock the diarization model by accepting the terms and conditions on Hugging Face before use.  
+
+---
+
+# ⚡ Colab Execution  
+For those who don’t have a powerful machine, I recommend running the code on Google Colab.  
+
+- You can download the Colab script from the repo or go directly to this [link](https://colab.research.google.com/drive/1HnjENO6ZjD2l5M782YvucylIdYT8UV2i?usp=sharing) to create a copy (or use the provided code directly).  
+
+# 🏠 Local Setup  
+### 📥 1. Clone the repository  
+```bash
+git clone https://github.com/MN-company/yt-video-transcriber.git && cd yt-video-transcriber
+```
+### 🔧 2. Install dependencies  
+```bash
+pip install -r requirements.txt
+```
+### ▶️ 3. Run the script with flags  
+```bash
+python3 main.py 
+```
+
+## Uso del modello
+```
+[link] -[FLAG] "value"
+```
+- `-h`, `--help` → print this message
+- `-d`, `--diarization`→ Enables diarization 
+- `-t`, `-token` → Replaces the default env setting for the Hugging Face token  
+- `-f,`  `--format`→ Replaces the default env setting for the format of the downloaded video
+- `-a`,  `--whisper_model`→ Replaces the default env setting fot the Whisper model (need to be compatible with Insane Faster Whisper) 
+- `-b`,  `--diarization_model`→ Replaces the default env setting fot the diarization model (need to be compatible with Insane Faster Whisper)
+- `--num_speaker` → Sets the number of speakers  
+- `-p`,  `--path` → Specifies the output path
+- `--task` → Specifies the task the model needs to do
+
+# Features
+- [Support for other websites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) ⚠️ I haven't tested other websites yet
+- CLI mode
+- Transcription with [Insanly faster Whisper](https://github.com/Vaibhavs10/insanely-fast-whisper)
+- Diarization
+- Youtube Playlist and batch download
+- Translating videos
+
+## 🚀 Roadmap  
+
+| Feature    | Status | Notes |
+|------------|--------|----------------------------|
+| **GUI** | 📅 Planned | Expected in **6.0** |
+| **Open-source AI for video summarization** | 📅 Planned |
+| **File management improvements** | 🔄 Work in progress |
+| **Parallel download for long videos** | 🔄 Work in progress |
+| **Parallel transcription** | 🔄 Work in progress |
+| **Improved playlist handling** | 🔄 Work in progress | **YT-DLP usage** |
+| **Output file named after video** | 🔄 Work in progress |
+| **Custom formats & Whisper settings** | 🔄 Work in progress |
+
+---
