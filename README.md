@@ -49,6 +49,7 @@ python3 main.py
 # Features
 - [Support for other websites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) ⚠️ I haven't tested other websites yet
 - CLI mode
+- GUI mode (it's basic and it really sucks, but it's a start)
 - Transcription with [Insanly faster Whisper](https://github.com/Vaibhavs10/insanely-fast-whisper)
 - Diarization
 - Youtube Playlist and batch download
