@@ -1,3 +1,7 @@
-yt-dlp
-insanely-fast-whisper
-dotenv
+yt-dlp==2023.11.16
+insanely-fast-whisper==0.1.0
+PyQt6==6.6.0
+python-dotenv==1.0.0
+torch==2.0.0
+transformers==4.34.1
+huggingface-hub==0.17.3
